@@ -5,7 +5,7 @@ from heuristic_miner.heuristic_mining import HeuristicMiner
 import os
 from flask import jsonify, request
 
-UPLOAD_FOLDER = '.backend/static/uploads'
+UPLOAD_FOLDER = './backend/static/uploads'
 
 # define allowed files:
 ALLOWED_EXTENSIONS = {'xes'}
