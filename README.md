@@ -4,7 +4,7 @@
 
 Implement a webservice to provide process discovery results in a light-weight form in order to facilitate the analysis of process execution data for non-technical experts. The webservice should take a XES file as input and depict the results of a process discovery algorithm.
 
-Understand and successfully implement alpha algorithm to execute the process mining. The implementation of additional algorithm(s) here is heuristic miner.
+Understand and successfully implement alpha algorithm to execute the process mining. Additional algorithm(s) implemented here is heuristic miner.
 
 ## Structure Overview
 
@@ -22,7 +22,7 @@ The input file is stored in/backend/static/uploads. The output is automatically 
 
 ## Implementation Details
 
-Python 3.11.4 is currently used. All the dependencies and additional python packages can be found in requirements.txt.
+Python 3.11.4 is currently used. All the dependencies and additional python packages can be found in requirements.txt. To install run pip install -r requirements.txt
 
 The backend uses Flask framework to receives and send back Http response.
 
@@ -30,4 +30,4 @@ The frontend uses Javascript, Html, CSS and React library to send Http request.
 
 In order to deploy and run the app on lehre server, it is required to store private ssh key in .ssh/id_rsa file and then log in to the lehre server via the command line. To complete log in, submit passphrase and personal account. After successsfully log in to the server, create a directory to clone the gitlab project. In the flask app located at backend/app.py, change the host and the assigned port to app.run(host="::1", <portnumber>).
 
-To run locally, keep the app.run(debug=True) at backend/app.py. First run the App.js in frontend/App.js with the command npm start. Right after the web page appears on browser, run the app.py in backend/app.py. The flask app runs on http://localhost:5000, while the react web page runs on http://localhost:3000.
+To run locally, keep the app.run(debug=True) at backend/app.py. First run the App.js in frontend/App.js with the command npm start. Right after the web page appears on browser, run the app.py in backend/app.py. The flask app runs on http://localhost:5000, while the react web page runs on http://localhost:3000. Finally, interact with the web page to get the process discovery result.
