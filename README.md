@@ -28,6 +28,18 @@ The backend uses Flask framework to receives and send back Http response.
 
 The frontend uses Javascript, Html, CSS and React library to send Http request.
 
-In order to deploy and run the app on lehre server, it is required to store private ssh key in .ssh/id_rsa file and then log in to the lehre server via the command line. To complete log in, submit passphrase and personal account. After successsfully log in to the server, create a directory to clone the gitlab project. In the flask app located at backend/app.py, change the host and the assigned port to app.run(host="::1", <portnumber>).
+In your terminal, do as follows:
 
-To run locally, keep the app.run(debug=True) at backend/app.py. First run the App.js in frontend/App.js with the command npm start. Right after the web page appears on browser, run the app.py in backend/app.py. The flask app runs on http://localhost:5000, while the react web page runs on http://localhost:3000. Finally, interact with the web page to get the process discovery result.
+1. git clone the project
+2. pip install -r requirements.txt
+3. cd frontend
+4. npm install react-scripts
+5. npm start
+
+After a few seconds, the web app will be opened on your browser at http://localhost:3000/.
+
+6. run app.py
+
+go back to http://localhost:3000/ to interact with the web app.
+
+Note: Once installed, the app can be executed without steps 1, 2 and 4.
