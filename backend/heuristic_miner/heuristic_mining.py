@@ -240,6 +240,13 @@ class HeuristicMiner:
         return column
 
     def step_3(self):
+        if len(self.input) == 0 or len(self.output) == 0:
+            dot = graphviz.Digraph('heuristic', format='pdf')
+            with dot.subgraph(name="heuristic net", node_attr={'shape': 'square'}, graph_attr={'rankdir':  'LR', 'nodesep': '1' }) as net:
+                net.graph_attr['ranksep'] = '1'
+                net.node_attr['shape'] = 'square'
+                dot.node("no relations detected")
+            return dot.view()
         dot = graphviz.Digraph('heuristic', format='pdf')
         with dot.subgraph(name="heuristic net", node_attr={'shape': 'square'}, graph_attr={'rankdir':  'LR', 'nodesep': '1' }) as net:
             net.graph_attr['ranksep'] = '1'
@@ -272,6 +279,8 @@ class HeuristicMiner:
         return dot.view()
 
     def causal_matrix(self):
+        if len(self.input) == 0 or len(self.output) == 0:
+            return 0
         activity = []
         for current in self.activities:
             activity.append(current)
