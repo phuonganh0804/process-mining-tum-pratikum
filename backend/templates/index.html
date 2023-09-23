@@ -4,8 +4,28 @@
     <title>Read File</title>
   </head>
   <body>
-    <form method="post" enctype="multipart/form-data">
-      <input type="file" name="file" />
+    <h1>Process Mining Tool</h1>
+    <form action="/api/upload" method="post" enctype="multipart/form-data">
+      <label for="file">
+        Select your XES file:
+        <input type="file" name="file" />
+      </label>
+      <label for="algorithm">
+        Mining algorithm:
+        <select id="algorithm" name="algorithm">
+          <option value="">--Please choose an option--</option>
+          <option value="Alpha Algorithm">Alpha Algorithm</option>
+          <option value="Heuristic Miner">Heuristic Miner</option>
+        </select>
+      </label>
+      <label for="dependency">
+        Dependency threshold:
+        <input type="text" placeholder=" eg. 0.5" name="dependency" />
+      </label>
+      <label for="and">
+        AND-threshold:
+        <input type="text" placeholder=" eg. 0.1" name="and" />
+      </label>
       <input type="submit" value="Submit" />
     </form>
   </body>
