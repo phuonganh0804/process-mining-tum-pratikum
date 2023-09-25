@@ -42,9 +42,9 @@ body {
   height: 100vh;
   margin: 0;
   font-size: 20px;
-  background-color: #1b1b32;
-  color: #f5f6f7;
-  background-image: url("../background-img/3409297.jpg");
+  background-color: #e4d4c8;
+  color: #201a1e;
+
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -57,6 +57,16 @@ form {
   min-width: 300px;
   margin: 0 auto;
   padding-bottom: 3em;
+
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.output {
+  width: 80vw;
+  max-width: 70vw;
+  min-width: 300px;
+  margin: 0 auto;
 }
 
 label {
@@ -70,16 +80,23 @@ h1 {
 }
 
 input,
-datalist {
+select,
+textarea {
   margin: 10px 0 0 0;
   width: 100%;
-  background-color: #0a0a23;
-  border: 1px solid #0a0a23;
-  color: #ffffff;
+  background-color: #d0b49f;
+  border: 1px solid #d0b49f;
+  color: #201a1e;
   min-height: 2em;
   padding: 1px 2px;
   font-size: 0.8em;
   margin-bottom: 1.5rem;
+  display: inline-block;
+  text-align: left;
+}
+
+option {
+  color: black;
 }
 
 button {
@@ -88,15 +105,9 @@ button {
   margin: 0 auto;
   height: 2em;
   font-size: 1.1rem;
-  background-color: #3b3b4f;
-  border-color: white;
-  color: #f5f6f7;
-}
-
-div {
-  margin-left: auto;
-  margin-right: auto;
-  padding: 20px;
+  background-color: #d0b49f;
+  border-color: #e1cbbb;
+  color: #201a1e;
 }
 
 footer {
