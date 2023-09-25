@@ -1,14 +1,15 @@
-from flask import Flask, render_template, request, flash, redirect, session
+from flask import Flask, render_template, request, flash, redirect, send_from_directory, session, url_for
 from werkzeug.utils import secure_filename
 from alpha_miner.alpha_algorithm import AlphaAlgorithm
 from heuristic_miner.heuristic_mining import HeuristicMiner 
 import os
-from flask import jsonify, request
+import shutil
+from flask import request
 
 UPLOAD_FOLDER = './backend/static/uploads'
 
 # define allowed files:
-ALLOWED_EXTENSIONS = {'xes'}
+ALLOWED_EXTENSIONS = {'xes', 'pdf'}
 
 app = Flask(__name__)
 
@@ -48,15 +49,27 @@ def index():
             d = {}
             if (algorithm == "Alpha Algorithm"):
                 mining = AlphaAlgorithm(data_file_path)    
-                mining.get_petri_net()  
-                d['message'] = "alpha success"
+                result = mining.get_petri_net()  
+                d['message'] = result
             elif (algorithm == "Heuristic Miner"):
-                mining = HeuristicMiner(data_file_path, 0.5, 0.1)
-                mining.heuristic_net()
-                d['message'] = "heuristic success"
-            return jsonify(d)
+                dependency = float(request.form.get("dependency"))
+                and_threshold = float(request.form.get("and"))
+                mining = HeuristicMiner(data_file_path, dependency, and_threshold)
+                result = mining.heuristic_net()
+                d['message'] = result 
+            dest = './frontend/src/result.png' 
+            shutil.copy(d['message'], dest)
+            return redirect(url_for("pdf", data=d['message']))
     return render_template('index.html')
 
+@app.route('/uploads/<name>')
+def download_file(name):
+    return render_template("upload.html", filename=name)
+
+@app.route('/pdf/<data>')
+def pdf(data):
+    return send_from_directory("../", data)
+    
 if __name__ == '__main__':
    app.run(debug=True)
     
