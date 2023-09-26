@@ -8,11 +8,11 @@ Understand and successfully implement alpha algorithm to execute the process min
 
 ## Implementation Details
 
-Python 3.11.4 is currently used. All the dependencies and additional python packages can be found in requirements.txt. To install run pip install -r requirements.txt
+Python 3.11.4 is currently used. All the dependencies and additional python packages can be found in requirements.txt.
 
-The backend uses Flask framework to receives and send back Http response.
+Server side: uses Flask framework to receive Http request and send back Http response.
 
-The frontend uses Javascript, Html, CSS and React library to send Http request and interact with users
+Client side: uses Javascript, Html, CSS and React library to send Http request and interact with users.
 
 In your terminal, do as follows:
 
