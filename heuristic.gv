@@ -1,0 +1,88 @@
+digraph heuristic {
+	"check ticket"
+	"check ticket" -> decide [label=0.857]
+	decide
+	"reinitiate request"
+	decide -> "reinitiate request" [label=0.75]
+	"pay compensation"
+	decide -> "pay compensation" [label=0.75]
+	"reject request"
+	decide -> "reject request" [label=0.75]
+	"examine casually"
+	"examine casually" -> decide [label=0.667]
+	"examine thoroughly"
+	"examine thoroughly" -> decide [label=0.5]
+	"pay compensation"
+	"pay compensation" -> 0
+	"register request"
+	"register request" -> "check ticket" [label=0.667]
+	"examine casually"
+	"register request" -> "examine casually" [label=0.75]
+	"examine thoroughly"
+	"register request" -> "examine thoroughly" [label=0.5]
+	"reinitiate request"
+	"reinitiate request" -> "check ticket" [label=0.5]
+	"examine thoroughly"
+	"reinitiate request" -> "examine thoroughly" [label=0.5]
+	"examine casually"
+	"reinitiate request" -> "examine casually" [label=0.5]
+	"reject request"
+	"reject request" -> 0
+	subgraph "heuristic net" {
+		graph [nodesep=1 rankdir=LR ranksep=1]
+		node [shape=square]
+	}
+	subgraph "causal matrix" {
+		net [label=<<table>
+    
+        <tr>
+            <td>ACTIVITY</td>
+            <td>INPUT</td>
+            <td>OUTPUT</td>
+        </tr>
+    
+    
+        <tr>
+            <td>check ticket</td>
+            <td>(register request ∨ reinitiate request)</td>
+            <td>decide</td>
+        </tr>
+        <tr>
+            <td>decide</td>
+            <td>check ticket ∧ (examine casually ∨ examine thoroughly)</td>
+            <td>(reinitiate request ∨ pay compensation) ∧ (reinitiate request ∨ reject request) ∧ (pay compensation ∨ reject request)</td>
+        </tr>
+        <tr>
+            <td>examine casually</td>
+            <td>(register request ∨ reinitiate request)</td>
+            <td>decide</td>
+        </tr>
+        <tr>
+            <td>examine thoroughly</td>
+            <td>(reinitiate request ∨ register request)</td>
+            <td>decide</td>
+        </tr>
+        <tr>
+            <td>pay compensation</td>
+            <td>decide</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>register request</td>
+            <td>0</td>
+            <td>check ticket ∧ (examine casually ∨ examine thoroughly)</td>
+        </tr>
+        <tr>
+            <td>reinitiate request</td>
+            <td>decide</td>
+            <td>check ticket ∧ (examine thoroughly ∨ examine casually)</td>
+        </tr>
+        <tr>
+            <td>reject request</td>
+            <td>decide</td>
+            <td>0</td>
+        </tr>
+    
+</table>> shape=plaintext]
+	}
+}

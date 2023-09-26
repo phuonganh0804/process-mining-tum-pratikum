@@ -1,0 +1,48 @@
+digraph petrinet {
+	graph [nodesep=1 rankdir=LR ranksep=1]
+	subgraph places {
+		node [shape=circle]
+		"p({a,b}, {c})" [label=" " xlabel=p1]
+		"p({c}, {d,e})" [label=" " xlabel=p2]
+		iL [label=" " xlabel=iL]
+		oL [label=" " xlabel=oL]
+	}
+	subgraph places {
+		net [label=<<table>
+    
+        <tr>
+            <td>Place</td>
+            <td> </td>
+        </tr>
+    
+    
+        <tr>
+            <td>p1</td>
+            <td>p({a,b}, {c})</td>
+        </tr>
+        <tr>
+            <td>p2</td>
+            <td>p({c}, {d,e})</td>
+        </tr>
+    
+</table>> shape=plaintext]
+	}
+	subgraph transitions {
+		node [shape=square]
+		a
+		b
+		c
+		d
+		e
+	}
+	iL -> a
+	iL -> b
+	a -> "p({a,b}, {c})"
+	b -> "p({a,b}, {c})"
+	"p({a,b}, {c})" -> c
+	c -> "p({c}, {d,e})"
+	"p({c}, {d,e})" -> d
+	"p({c}, {d,e})" -> e
+	d -> oL
+	e -> oL
+}

@@ -1,4 +1,7 @@
 import graphviz
+from prettytable import PrettyTable
+import numpy as np
+import matplotlib.pyplot as plt
 
 class AlphaAlgorithm:
 
@@ -15,6 +18,7 @@ class AlphaAlgorithm:
         self.eventLog = []
         self.min = []
         self.max = []
+        self.event = {}
 
     def step_1(self):
         # check all traces in event log:
@@ -45,15 +49,16 @@ class AlphaAlgorithm:
                         trace.append(name)
                 else:
                     trace.append(name)
+                # check frequency of each event: 
+                if name not in self.event:
+                    self.event[name] = 1
+                else:
+                    self.event[name] += self.event[name]
+                # check all transitions:
+                if self.tL.count(name) == 0:
+                    self.tL.append(name)
             if self.eventLog.count(trace) == 0:
                 self.eventLog.append(trace)
-
-        # check all transitions:
-        for trace in self.eventLog:
-            traceLength = len(trace)
-            for i in range(traceLength):
-                if self.tL.count(trace[i]) == 0:
-                    self.tL.append(trace[i])
         self.tL.sort()
         return self.tL 
     
@@ -212,11 +217,26 @@ class AlphaAlgorithm:
         return self.fL
     
     def step_8(self):
-        dot = graphviz.Digraph('petrinet', format='pdf', graph_attr={'rankdir':  'LR', 'nodesep': '1' })
+        table = PrettyTable()
+        table.field_names = ["Place", " "]
+        dot = graphviz.Digraph('petrinet', format='png', graph_attr={'rankdir':  'LR', 'nodesep': '1' })
         dot.graph_attr['ranksep'] = '1'
         with dot.subgraph(name="places", node_attr={'shape': 'circle'}) as places:
+            n = 1
             for current in self.pL:
-                places.node(current, xlabel = current, label=" ")
+                if current == "iL" or current == "oL":
+                    places.node(current, xlabel = current, label=" ")
+                else:
+                    index = "p" + str(n)
+                    n += 1
+                    places.node(current, xlabel = index, label=" ")
+                    table.add_row([index, current])
+        table_format: str = "html"
+        html_string = table.get_formatted_string(table_format)
+        html_string = html_string.replace("<thead>", "").replace("</thead>", "").replace("<tbody>","").replace("</tbody>", "").replace("<th>", "<td>").replace("</th>", "</td>")
+        html_string = "<" + html_string + ">"
+        with dot.subgraph(name = 'places') as places:
+            places.node("net",shape = "plaintext", label = html_string)
         with dot.subgraph(name="transitions", node_attr={'shape': 'square'}) as transitions:
             for current in self.tL:
                 transitions.node(current)
@@ -236,8 +256,8 @@ class AlphaAlgorithm:
                 if current not in edges.keys():
                     dot.edge(current[0], current[1])
                     edges[current] = 1   
- 
-        return dot.view()
+
+        return dot.render()
 
     def get_petri_net(self):
         self.step_1()
@@ -248,6 +268,22 @@ class AlphaAlgorithm:
         self.step_6()
         self.step_7()
         return self.step_8()
+    
+    def frequency(self):
+        data = []
+        label = []
+        sorted_by_value = sorted(self.event.items(), key=lambda x:x[1], reverse=True)
+        sorted_event = dict(sorted_by_value)
+        for key in sorted_event:
+            label.append(key)
+            data.append(sorted_event[key])
+        plt.xticks(range(len(data)), label)
+        plt.xlabel('Activities')
+        plt.ylabel('Frequency')
+        plt.bar(range(len(data)), data) 
+        plt.savefig('frequency.png')
+
+
             
 
 
