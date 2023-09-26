@@ -85,36 +85,6 @@ class HeuristicMiner:
                                 self.loops_two[reversed_tmp] = 1
                             i += 2
                 i += 1
-                    
-                    
-            """
-            for i in range(trace_length):
-                if i < trace_length - 1:
-                    tmp = (trace[i], trace[i+1])
-                    reversed_tmp = (trace[i+1], trace[i])
-                    # not loops of length two:
-                    if tmp not in self.frequency:
-                        self.frequency[tmp] = 1 
-                    else:
-                        self.frequency[tmp] = self.frequency[tmp] + 1 
-                    # check frequency of a loop of length two : ACDCDCDCDB, ACDCDB, ACDCD
-                    if i < trace_length - 3:
-                        next = (trace[i+2], trace[i+3])
-                        if tmp == next and trace[i+2] != trace[i+3]:                
-                            if tmp in self.frequency:
-                                del self.frequency[tmp]
-                            if tmp in self.loops_two:
-                                self.loops_two[tmp] = self.loops_two[tmp] + 1
-                                print("frequency: ", tmp, next, self.loops_two[tmp])
-                            else:
-                                self.loops_two[tmp] = 1
-                                self.loops_two[reversed_tmp] = 1
-                                print("frequency: ", self.loops_two[tmp])
-                    if i < trace_length - 2:
-                        if tmp in self.loops_two or reversed_tmp in self.loops_two:
-                            if trace[i+2] == trace[i]:  
-                                    self.loops_two[tmp] = self.loops_two[tmp] + 1 
-            """ 
         # mining the dependency:
         for i in self.frequency:
             reverse = (i[1], i[0])
