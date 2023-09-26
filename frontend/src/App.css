@@ -44,7 +44,6 @@ body {
   font-size: 20px;
   background-color: #e4d4c8;
   color: #201a1e;
-
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -57,7 +56,6 @@ form {
   min-width: 300px;
   margin: 0 auto;
   padding-bottom: 3em;
-
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -66,7 +64,19 @@ form {
   width: 80vw;
   max-width: 70vw;
   min-width: 300px;
-  margin: 0 auto;
+  padding-bottom: 3em;
+  background-color: #d0b49f;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  margin: 2em auto;
+}
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  object-fit: contain;
 }
 
 label {
@@ -96,7 +106,7 @@ textarea {
 }
 
 option {
-  color: black;
+  color: #201a1e;
 }
 
 button {
@@ -120,6 +130,7 @@ footer {
   align-items: center;
   justify-content: center;
   display: flex;
+  background-color: #e4d4c8;
 }
 
 .footer p {

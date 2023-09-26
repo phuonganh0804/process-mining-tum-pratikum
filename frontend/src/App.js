@@ -11,12 +11,28 @@ class App extends Component {
       algorithm: "",
       dependency: "",
       and: "",
+      observation: "",
+      relative: "",
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
     this.handleOption = this.handleOption.bind(this);
     this.handleDependency = this.handleDependency.bind(this);
     this.handleAnd = this.handleAnd.bind(this);
+    this.handlePositiveObservation = this.handlePositiveObservation.bind(this);
+    this.handleRelativeToBest = this.handleRelativeToBest.bind(this);
+  }
+
+  handleRelativeToBest(event) {
+    this.setState({
+      relative: event.target.value,
+    });
+  }
+
+  handlePositiveObservation(event) {
+    this.setState({
+      observation: event.target.value,
+    });
   }
 
   handleDependency(event) {
@@ -54,6 +70,8 @@ class App extends Component {
     data.append("algorithm", this.state.algorithm);
     data.append("dependency", this.state.dependency);
     data.append("and", this.state.and);
+    data.append("observation", this.state.observation);
+    data.append("relative", this.state.relative);
     const response = await fetch("/api/upload", {
       method: "post",
       body: data,
@@ -104,7 +122,7 @@ class App extends Component {
                 Dependency threshold:
                 <input
                   type="text"
-                  placeholder="0.5"
+                  placeholder="0.9"
                   value={this.state.dependency}
                   onChange={this.handleDependency}
                 />
@@ -118,6 +136,24 @@ class App extends Component {
                   onChange={this.handleAnd}
                 />
               </label>
+              <label for="observation">
+                Positive observations threshold:
+                <input
+                  type="text"
+                  placeholder="3"
+                  value={this.state.observation}
+                  onChange={this.handlePositiveObservation}
+                />
+              </label>
+              <label for="relative">
+                Relative to best threshold:
+                <input
+                  type="text"
+                  placeholder="0.05"
+                  value={this.state.relative}
+                  onChange={this.handleRelativeToBest}
+                />
+              </label>
               <label for="submit">
                 <button id="submit" onClick={this.handleUpload}>
                   Start Mining
@@ -126,7 +162,7 @@ class App extends Component {
             </form>
           </div>
           <div class="output">
-            <img src={result} alt="result" width="100%" height="60%" />
+            <img src={result} alt="result" />
           </div>
           <footer>
             <p></p>
