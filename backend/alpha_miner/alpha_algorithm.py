@@ -42,10 +42,12 @@ class AlphaAlgorithm:
                 if indexT != -1:
                     m = 19
                     transition = ''
-                    while (m <= 26):
+                    while event[indexT+m] != '"':
                         transition = transition + event[indexT+m]
                         m += 1
-                    if transition == 'complete':
+                    transition = transition.lower()
+                    if transition == 'complete' or transition == 'closed':
+
                         trace.append(name)
                 else:
                     trace.append(name)
