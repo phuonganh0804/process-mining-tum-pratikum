@@ -3,10 +3,12 @@ from prettytable import PrettyTable
 
 class HeuristicMiner:
 
-    def __init__(self, file, dependency_threshold, and_threshold):
+    def __init__(self, file, dependency_threshold, and_threshold, positive_observation, relative_to_best):
         self.file = file
         self.dependency_threshold = dependency_threshold
         self.and_threshold = and_threshold
+        self.positive_observation = positive_observation
+        self.relative_to_best = relative_to_best
         self.loops_two = {}
         self.frequency = {}
         self.dependency = {}
@@ -14,6 +16,7 @@ class HeuristicMiner:
         self.output = {}
         self.eventLog = []
         self.activities = []
+        
 
     def step_1(self):
         #read file:
@@ -37,14 +40,17 @@ class HeuristicMiner:
                 if indexT != -1:
                     m = 19
                     transition = ''
-                    while (m <= 26):
+                    while event[indexT+m] != '"':
                         transition = transition + event[indexT+m]
                         m += 1
-                    if transition == 'complete':
+                    transition = transition.lower()
+                    if transition == 'complete' or transition == 'closed':
+
                         trace.append(name)
                 else:
                     trace.append(name)
             self.eventLog.append(trace)
+    
         # check all activities:
         for trace in self.eventLog:
             traceLength = len(trace)
@@ -55,6 +61,33 @@ class HeuristicMiner:
         # check frequency of all pairs:
         for trace in self.eventLog:
             trace_length = len(trace)
+            i = 0
+            while i < trace_length:
+                if i < trace_length - 1:
+                    tmp = (trace[i], trace[i+1])
+                    reversed_tmp = (trace[i+1], trace[i])
+                    # consider first as not loops of length two:
+                    if tmp not in self.frequency:
+                        self.frequency[tmp] = 1 
+                    else:
+                        self.frequency[tmp] += 1 
+                    # check frequency of a loop of length two : ACDCDCDB, ACDCDB, ACDCDCB
+                    if i < trace_length - 3:
+                        next = (trace[i+2], trace[i+3])
+                        if tmp == next and trace[i+2] != trace[i+3]:                
+                            if tmp in self.frequency:
+                                del self.frequency[tmp]
+                            if tmp in self.loops_two:
+                                self.loops_two[tmp] += 1
+                                self.loops_two[reversed_tmp] += 1
+                            else:
+                                self.loops_two[tmp] = 1
+                                self.loops_two[reversed_tmp] = 1
+                            i += 2
+                i += 1
+                    
+                    
+            """
             for i in range(trace_length):
                 if i < trace_length - 1:
                     tmp = (trace[i], trace[i+1])
@@ -64,20 +97,24 @@ class HeuristicMiner:
                         self.frequency[tmp] = 1 
                     else:
                         self.frequency[tmp] = self.frequency[tmp] + 1 
-                    # check frequency of a loop of length two : ACDCDCDCDB, ACDCDB, ACDCDB
+                    # check frequency of a loop of length two : ACDCDCDCDB, ACDCDB, ACDCD
                     if i < trace_length - 3:
                         next = (trace[i+2], trace[i+3])
-                        if tmp == next:
+                        if tmp == next and trace[i+2] != trace[i+3]:                
                             if tmp in self.frequency:
                                 del self.frequency[tmp]
-                            if tmp not in self.loops_two:
-                                self.loops_two[tmp] = 1
-                            else:
+                            if tmp in self.loops_two:
                                 self.loops_two[tmp] = self.loops_two[tmp] + 1
+                                print("frequency: ", tmp, next, self.loops_two[tmp])
+                            else:
+                                self.loops_two[tmp] = 1
+                                self.loops_two[reversed_tmp] = 1
+                                print("frequency: ", self.loops_two[tmp])
                     if i < trace_length - 2:
                         if tmp in self.loops_two or reversed_tmp in self.loops_two:
                             if trace[i+2] == trace[i]:  
-                                    self.loops_two[tmp] = self.loops_two[tmp] + 1
+                                    self.loops_two[tmp] = self.loops_two[tmp] + 1 
+            """ 
         # mining the dependency:
         for i in self.frequency:
             reverse = (i[1], i[0])
@@ -97,19 +134,20 @@ class HeuristicMiner:
         return self.dependency  
         
     def step_2(self):
+        # check input, output first round:
         for pair in self.dependency:
-            if self.dependency[pair] >= self.dependency_threshold:
+            if self.dependency[pair] > self.dependency_threshold and self.frequency[pair] > self.positive_observation and (self.dependency[pair] - self.dependency_threshold) < self.relative_to_best:
                 first = pair[0].split(',')
                 for current in first:
                     if current in self.output and pair[1] not in self.output[current]:
                         self.output[current].append(pair[1])
-                    else:
+                    elif current not in self.output:
                         self.output[current] = [pair[1]]
                 last = pair[1].split(',')
                 for current in last:
                     if current in self.input and pair[0] not in self.input[current]:
                         self.input[current].append(pair[0])
-                    else:
+                    elif current not in self.input:
                         self.input[current] = [pair[0]]
         # check start activities:
         start = []
@@ -216,9 +254,11 @@ class HeuristicMiner:
         sorted_dict = {i: self.input[i] for i in myKeys}
         self.input = sorted_dict
 
-    def find_column(self, dict):
+    def find_column(self, dict, activity):
         column = []
-        for current in dict:                                
+        for current in dict:  
+            if current not in activity:
+                continue                              
             str = ""
             for value in dict[current]:
                 if len(value) > 1:
@@ -240,14 +280,14 @@ class HeuristicMiner:
         return column
 
     def step_3(self):
-        if len(self.input) == 0 or len(self.output) == 0:
-            dot = graphviz.Digraph('heuristic', format='pdf')
+        if len(self.input) == 0 and len(self.output) == 0:
+            dot = graphviz.Digraph('heuristic', format='png')
             with dot.subgraph(name="heuristic net", node_attr={'shape': 'square'}, graph_attr={'rankdir':  'LR', 'nodesep': '1' }) as net:
                 net.graph_attr['ranksep'] = '1'
                 net.node_attr['shape'] = 'square'
                 dot.node("no relations detected")
-            return dot.view()
-        dot = graphviz.Digraph('heuristic', format='pdf')
+            return dot.render()
+        dot = graphviz.Digraph('heuristic', format='png')
         with dot.subgraph(name="heuristic net", node_attr={'shape': 'square'}, graph_attr={'rankdir':  'LR', 'nodesep': '1' }) as net:
             net.graph_attr['ranksep'] = '1'
             net.node_attr['shape'] = 'square'
@@ -276,16 +316,18 @@ class HeuristicMiner:
         with dot.subgraph(name = 'causal matrix') as causal_matrix:
             html_string = self.causal_matrix()
             causal_matrix.node("net",shape = "plaintext", label = html_string)
-        return dot.view()
+        return dot.render()
 
     def causal_matrix(self):
-        if len(self.input) == 0 or len(self.output) == 0:
+        if len(self.input) == 0 and len(self.output) == 0:
             return 0
         activity = []
-        for current in self.activities:
-            activity.append(current)
-        input = self.find_column(self.input)
-        output = self.find_column(self.output)
+        for key in self.activities:
+            if key in self.input and key in self.output:
+                activity.append(key)
+        activity.sort()
+        input = self.find_column(self.input, activity)
+        output = self.find_column(self.output, activity)
         table = PrettyTable()
         table.add_column("ACTIVITY", activity)
         table.add_column("INPUT", input)
