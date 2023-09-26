@@ -54,7 +54,9 @@ def index():
             elif (algorithm == "Heuristic Miner"):
                 dependency = float(request.form.get("dependency"))
                 and_threshold = float(request.form.get("and"))
-                mining = HeuristicMiner(data_file_path, dependency, and_threshold)
+                positive_observation = float(request.form.get("observation"))
+                relative_to_best = float(request.form.get("relative"))
+                mining = HeuristicMiner(data_file_path, dependency, and_threshold, positive_observation, relative_to_best)
                 result = mining.heuristic_net()
                 d['message'] = result 
             dest = './frontend/src/result.png' 
