@@ -2,6 +2,10 @@
 <html>
   <head>
     <title>Read File</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
   </head>
   <body>
     <h1>Process Mining Tool</h1>
@@ -27,14 +31,16 @@
         <input type="text" placeholder=" 0.1" name="and" />
       </label>
       <label for="observation">
-        Postive observations threshold:
-        <input type="text" placeholder=" 3" name="and" />
+        Positive observations threshold:
+        <input type="text" placeholder=" 3" name="observation" />
       </label>
       <label for="relative">
         Relative to best threshold:
-        <input type="text" placeholder=" 0.05" name="and" />
+        <input type="text" placeholder=" 0.05" name="relative" />
       </label>
-      <input type="submit" value="Submit" />
+      <div class="submit">
+        <input type="submit" value="Start Mining" />
+      </div>
     </form>
   </body>
 </html>

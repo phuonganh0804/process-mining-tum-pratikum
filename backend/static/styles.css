@@ -109,7 +109,7 @@ option {
   color: #201a1e;
 }
 
-button {
+.submit input {
   display: block;
   width: 60%;
   margin: 0 auto;
@@ -118,6 +118,7 @@ button {
   background-color: #d0b49f;
   border-color: #e1cbbb;
   color: #201a1e;
+  text-align: center;
 }
 
 footer {
