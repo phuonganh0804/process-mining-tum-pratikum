@@ -12,20 +12,30 @@ Python 3.11.4 is currently used. All the dependencies and additional python pack
 
 Server side: uses Flask framework to receive Http request and send back Http response.
 
-Client side: uses Javascript, Html, CSS and React library to send Http request and interact with users.
+Client side: uses Javascript, Html, CSS and React library / Flask framework to send Http request and interact with users.
 
 In your terminal, do as follows:
 
 1. git clone the project
 2. pip install -r requirements.txt
-3. cd frontend
-4. npm install react-scripts
-5. npm start
+
+Two ways to run the Program.
+
+3.1. Using Flask framework:
+
+3.1.1 run app.py
+3.1.2 navigate to http://127.0.0.1:5000/api/upload to upload file.
+
+3.2. Using React library:
+
+3.2.1 cd frontend
+3.2.2 npm install react-scripts
+3.2.3. npm start
 
 After a few seconds, the web app will be opened on your browser at http://localhost:3000/.
 
-6. run app.py
+3.2.4. run app.py
 
 go back to http://localhost:3000/ to interact with the web app.
 
-Note: Once installed, the app can be executed without steps 1, 2 and 4.
+Note: Once installed, the app can be executed without steps 1, 2 and 3.2.2.
