@@ -23,18 +23,18 @@ Two ways to run the Program:
 
 3. Using Flask framework:
 
-3.1. run app.py
-3.2. navigate to http://127.0.0.1:5000/api/upload to upload file.
+3.1 run app.py
+3.2 navigate to http://127.0.0.1:5000/api/upload to upload file.
 
 4. Using React library:
 
-4.1. cd frontend
-4.2. npm install react-scripts
-4.3. npm start
+4.1 cd frontend
+4.2 npm install react-scripts
+4.3 npm start
 
 After a few seconds, the web app will be opened on your browser at http://localhost:3000/.
 
-4.4. run app.py
+4.4 run app.py
 
 go back to http://localhost:3000/ to interact with the web app.
 
