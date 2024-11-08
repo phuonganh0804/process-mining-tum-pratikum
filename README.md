@@ -14,6 +14,8 @@ Server side: uses Flask framework to receive Http request and send back Http res
 
 Client side: uses Javascript, Html, CSS and React library / Flask framework to send Http request and interact with users.
 
+Datasets for testing located in backend/static/uploads.
+
 In your terminal, do as follows:
 
 1. git clone the project
